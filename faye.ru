@@ -36,8 +36,7 @@ class ServerAuth
 
   private
   def master_check_routine(message)
-    channel = message['channel']
-    host = /\/(.*?)\//.match(channel).captures[0]
+    host = get_host_from_message(message)
     master_token = @rinstance.get "#{host}:streamslide:master_key" 
 
     if (message['data']['token'] != master_token)
@@ -47,14 +46,18 @@ class ServerAuth
   end
 
   def normal_check_routine(message)
-    channel = message['channel']
-    host = /\/(.*?)\//.match(channel).captures[0]
+    host = get_host_from_message(message)
     session_token = @rinstance.get "#{host}:streamslide:auth_key" 
   
     if (message['data']['token'] != session_token)
       message['error'] = '[ErrorMessage] Invalid authentication token'
     end
     message['data']['token'] = nil
+  end
+
+  def get_host_from_message(mes)
+    channel = message['channel']
+    return /\/(.*?)\//.match(channel).captures[0]
   end
 end
 
