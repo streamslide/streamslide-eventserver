@@ -56,7 +56,7 @@ class ServerAuth
   end
 
   def get_host_from_message(mes)
-    channel = message['channel']
+    channel = mes['channel']
     return /\/(.*?)\//.match(channel).captures[0]
   end
 end
