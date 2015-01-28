@@ -1,0 +1,17 @@
+<script type="text/javascript" 
+  src="http://localhost:9292/faye/client.js">
+</script>
+
+<button type='button' onclick='send();'>send</button>
+
+<script type="text/javascript">
+  var client = new Faye.Client('http://localhost:9292/faye');
+  var subscription = client.subscribe('/foo', function(message) {
+    console.log(message);
+  });
+
+  function send() {
+    alert('sended');
+    client.publish('/foo', {text: 'hehe'});
+  }
+</script>
